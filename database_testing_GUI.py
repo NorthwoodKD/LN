@@ -22,7 +22,7 @@ class DataBaseGui:
         #command needs to change 'in_stock' to 'N'
         #command needs to add shipped_month, shipped_day, shipped_year, customer_name, 
         #customer_po, lnpo, order_numder, tracking, in_process, value
-        self.enter_order_button = Button(root, text="Enter new order")
+        self.enter_order_button = Button(root, text="IMPORT new order")
         self.enter_order_button.pack()
         
         #command return a view of 'in_process' == 'Y' and shipped month > 0 
@@ -35,7 +35,7 @@ class DataBaseGui:
         self.update_inventory_button.pack()
         
         #command takes the results of 'in_process' and changes value from 'Y' to 'N'
-        self.advance_order_button = Button(root, text="Advance order")
+        self.advance_order_button = Button(root, text="Advance orders")
         self.advance_order_button.pack()
         
         self.close_button = Button(root,text="close", command=self.root.destroy)
@@ -46,14 +46,19 @@ class DataBaseGui:
         self.test_database.connect_cursor()
 
     def product_search(self):
-        def ttt():
+        def search_database():
             self.pn = self.test_database.search_master_by_productid(self.pn_entry.get())
             if self.pn != None:
-                lab = ""
                 for i in range(len(self.pn)):
-                    lab=lab+self.pn[i]+'\n'
-                self.label_text1.set(lab)
+                    self.chkValue=BooleanVar()
+                    self.chkValue.set(False)
+                    #s = "button"+str(i)
+                    self.s = Checkbutton(self.window, text=self.pn[i], var=self.chkValue)
+                    self.s.pack()
+                
                 self.pn_entry.delete(0,END)
+                self.make_order = Button(self.window, text = "Add to order")
+                self.make_order.pack()
             else:
                 self.label_text1.set(self.pn_entry.get() + " is not available")
                 self.pn_entry.delete(0,END)
@@ -63,11 +68,11 @@ class DataBaseGui:
         
         self.connect_to_database()
         self.window=Toplevel()
-        self.window.title("Product Search" )
+        self.window.title("Product Search")
         self.product_number = StringVar()
         self.pn_entry=Entry(self.window, textvariable=self.product_number)
         self.pn_entry.pack()
-        self.check_button=Button(self.window, text="Check Product", command=ttt)
+        self.check_button=Button(self.window, text="Check Product", command=search_database)
         self.check_button.pack()
         self.label_text1=StringVar() 
         self.label1=Label(self.window, textvariable=self.label_text1)
