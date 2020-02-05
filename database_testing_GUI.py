@@ -46,18 +46,19 @@ class DataBaseGui:
         self.test_database.connect_cursor()
 
     def product_search(self):
+        def add_to_order():
+            self.label_text1.set(self.chkValue.get())
         def search_database():
             self.pn = self.test_database.search_master_by_productid(self.pn_entry.get())
             if self.pn != None:
                 for i in range(len(self.pn)):
                     self.chkValue=BooleanVar()
                     self.chkValue.set(False)
-                    #s = "button"+str(i)
                     self.s = Checkbutton(self.window, text=self.pn[i], var=self.chkValue)
                     self.s.pack()
                 
-                self.pn_entry.delete(0,END)
-                self.make_order = Button(self.window, text = "Add to order")
+                #self.pn_entry.delete(0,END)
+                self.make_order = Button(self.window, text = "Add to order", command=add_to_order)
                 self.make_order.pack()
             else:
                 self.label_text1.set(self.pn_entry.get() + " is not available")
