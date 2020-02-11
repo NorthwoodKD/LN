@@ -16,29 +16,29 @@ class DataBaseGui:
         root.title("LN Database GUI")
         
         # command search master table for products with 'in_stock' == 'Y'
-        self.product_search_button = Button(root, text="search product availability", command = self.product_search)
+        self.product_search_button = Button(self.root, text="search product availability", command = self.product_search)
         self.product_search_button.pack()
         
         #command needs to change 'in_stock' to 'N'
         #command needs to add shipped_month, shipped_day, shipped_year, customer_name, 
         #customer_po, lnpo, order_numder, tracking, in_process, value
-        self.enter_order_button = Button(root, text="IMPORT new order")
+        self.enter_order_button = Button(self.root, text="IMPORT new order")
         self.enter_order_button.pack()
         
         #command return a view of 'in_process' == 'Y' and shipped month > 0 
-        self.view_inprocess_button = Button(root, text="View orders in process")
+        self.view_inprocess_button = Button(self.root, text="View orders in process")
         self.view_inprocess_button.pack()
         
         #command takes the return of view 'in_process' and creates the csv files
         #required to update the inventory on LN.com
-        self.update_inventory_button = Button(root, text="Update Inventory")
+        self.update_inventory_button = Button(self.root, text="Update Inventory")
         self.update_inventory_button.pack()
         
         #command takes the results of 'in_process' and changes value from 'Y' to 'N'
-        self.advance_order_button = Button(root, text="Advance orders")
+        self.advance_order_button = Button(self.root, text="Advance orders")
         self.advance_order_button.pack()
         
-        self.close_button = Button(root,text="close", command=self.root.destroy)
+        self.close_button = Button(self.root,text="close", command=self.root.destroy)
         self.close_button.pack()
         
     def connect_to_database(self):
@@ -50,19 +50,19 @@ class DataBaseGui:
             self.label_text1.set(self.chkValue.get())
         def search_database():
             self.pn = self.test_database.search_master_by_productid(self.pn_entry.get())
-            if self.pn != None:
+            if self.pn == None:
+                self.label_text1.set(self.pn_entry.get() + " is not available")
+                self.pn_entry.delete(0,END)
+            else:
                 for i in range(len(self.pn)):
                     self.chkValue=BooleanVar()
                     self.chkValue.set(False)
-                    self.s = Checkbutton(self.window, text=self.pn[i], var=self.chkValue)
+                    self.s = Checkbutton(self.window,text=self.pn[i],var=self.chkValue)
                     self.s.pack()
                 
                 #self.pn_entry.delete(0,END)
                 self.make_order = Button(self.window, text = "Add to order", command=add_to_order)
                 self.make_order.pack()
-            else:
-                self.label_text1.set(self.pn_entry.get() + " is not available")
-                self.pn_entry.delete(0,END)
         def close_window():
             self.window.destroy()
             self.test_database.close_db()
