@@ -16,7 +16,7 @@ us.connect_cursor()
 
 os.chdir("C:/Users/Holt88/Desktop")
    
-pdfFileObj = open("Invoice# 20000324.pdf","rb")
+pdfFileObj = open("Invoice# 20000446.pdf","rb")
 pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
 
 #us.lnidcas_table_add_record("LN02188200","1363380-81-7")
